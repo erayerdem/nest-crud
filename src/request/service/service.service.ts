@@ -26,7 +26,7 @@ export class ServiceService {
             surname : req.surname,
         }
 
-        console.log("hello");
+        
         this.usersRepository.save(user);
 
     }

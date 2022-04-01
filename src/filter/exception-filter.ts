@@ -1,22 +1,31 @@
-import { ExceptionFilter, Catch, ArgumentsHost, HttpException, BadRequestException } from '@nestjs/common';
+import { ExceptionFilter, Catch, ArgumentsHost } from '@nestjs/common';
 import { Request, Response } from 'express';
+import ValidationException from 'src/ex/exception';
 
 @Catch()
 export class MyExceptionFilter implements ExceptionFilter {
-  catch(exception: BadRequestException, host: ArgumentsHost) {
+  catch(exception: Error, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
-    const status = exception.getStatus();
     
-    console.info("gelik"+exception.stack);
+    let message;
+     if (exception instanceof ValidationException) {
+      var ex = exception as ValidationException;
+      message = "s";
+     }
+     else {
+       message = exception.message;
+     }
+    
     response
-      .status(status)
+      .status(500)
       .json({
         statusCode: 500,
         timestamp: new Date().toISOString(),
         path: request.url,
-        message : exception.message
+        message : message
       });
   }
 }
+

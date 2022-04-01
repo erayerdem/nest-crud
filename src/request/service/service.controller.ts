@@ -1,4 +1,5 @@
 import { Body, Controller, HttpCode, HttpStatus, Post, Req, Get, Param, HttpException, UseFilters, UsePipes, ValidationPipe, BadRequestException, ValidationError } from '@nestjs/common';
+import ValidationException from 'src/ex/exception';
 import { MyExceptionFilter } from 'src/filter/exception-filter';
 import { CreateAccountDto } from './dto/account-request.dto';
 import { ServiceService } from './service.service';
@@ -11,7 +12,7 @@ constructor(private  service : ServiceService){}
     @Post() 
     @HttpCode(HttpStatus.CREATED)
     @UsePipes(new ValidationPipe({ transform: false , disableErrorMessages :false ,exceptionFactory: (validationErrors: ValidationError[] = []) => {
-        return new BadRequestException(validationErrors);
+        return new ValidationException(validationErrors);
       }, })) 
     async createNewRequest(@Body() req : CreateAccountDto ){
        
