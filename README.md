@@ -9,7 +9,7 @@
 
 ## Description
 
-* Exception Handlind 
+* Exception Handling 
 * Crud 
 * Validation
 * Orm  etc 
